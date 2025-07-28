@@ -33,8 +33,23 @@ Programming them should be done only once, when new board received:
 7. Close Ubuntu, open Vivado in Windows and scan inside Hardware Manager page. Should find "Digilent cable" and see as connected (but no target found as no FPGA connected).
 
 
-=>Alternatively, a more "legal" way for programming the FTDI FT2232 as Vivado JTAG programmer is to follow this [AMD](https://docs.amd.com/r/en-US/ug908-vivado-programming-debugging/Programming-FTDI-Devices-for-Vivado-Hardware-Manager-Support) solution.
+=>Alternatively, a more "legal" way for programming the FTDI FT2232 as Vivado JTAG programmer is to follow this [AMD](https://docs.amd.com/r/en-US/ug908-vivado-programming-debugging/Programming-FTDI-Devices-for-Vivado-Hardware-Manager-Support) solution. to do so:
 
+1. `program_ftdi` only support 1 active FTDI device to be connected. the other FTDI (FT4232) need then to be "uninstalled" first from the Windows Device Manager `usb Serial Bus controllers`. The x4 USB Serial Converters channel A, B, C, D need to be uninstalled before goind to step 2. Failure to do so will later not write the EEPROM, and will leave no message.
+2. Open a 'cmd' window and 'cd' to '..\Xilinx\Vivado\202x.x\bin'.
+3. run the command:
+   ```program_ftdi -write -ftdi FT2232H -serial 00000x -vendor "Brennus Labs" -board "Alto_V1" -desc "Alto Base_board_V1.0"```.
+   Serial being a running number, and other fields can be updated accordingly.
+5. If no issue you should get:
+```
+INFO: ftdi part = FT2232H
+INFO: Serial = 000002
+INFO: Detected 1 devices
+INFO: Device location = 6433
+INFO: fwid=0x584a0003
+INFO: FTDI Programming Passed
+```
+6. The programming cable should be visible from the Xilinx hardware manager when choosing `Auto Connect`.
 
 ## TPS53681 Programming
 
